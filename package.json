@@ -1,0 +1,26 @@
+{
+    "name": "@hibiscus/request-decorator",
+    "version": "1.0.9",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "package": "npm version patch && ng-packagr -p ng-package.json && npm publish dist --access public"
+    },
+    "author": "guanyj",
+    "license": "ISC",
+    "dependencies": {
+        "reflect-metadata": "^0.1.12"
+    },
+    "devDependencies": {
+        "@angular/cli": "^7.1.0",
+        "@angular/compiler": "^7.1.1",
+        "@angular/compiler-cli": "^7.1.1",
+        "@angular/core": "^7.1.1",
+        "@types/node": "^10.12.11",
+        "ng-packagr": "^4.4.5",
+        "ts-node": "^7.0.1",
+        "tsickle": "^0.34.0",
+        "typescript": "3.1.1"
+    }
+}
