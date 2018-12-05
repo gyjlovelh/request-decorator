@@ -73,9 +73,8 @@ export const Path = (path: string): Function => {
                         url
                     });
                 }
-
+                const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
                 return httpClient[httpMethod](url, body).pipe(map(res => {
-                    const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
                     if (afterFn) {
                         return afterFn({
                             res,
