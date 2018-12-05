@@ -71,16 +71,17 @@ export const Path = (path: string): Function => {
                 const httpMethod = Reflect.getMetadata(httpMethodSymbolKey, target, propertyKey);
                 url = httpUrl + url;
                 const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
-                return await httpClient[httpMethod](url, body).pipe(map(res => {
-                    if (afterFn) {
-                        return afterFn(res);
-                    }
-                    return res;
-                })).subscribe(res => {
-                    return new Promise(resolve => {
+
+                return await new Promise(resolve => {
+                    httpClient[httpMethod](url, body).pipe(map(res => {
+                        if (afterFn) {
+                            return afterFn(res);
+                        }
+                        return res;
+                    })).subscribe(res => {
                         resolve(res);
                     })
-                });
+                })
             };
         }
     };
