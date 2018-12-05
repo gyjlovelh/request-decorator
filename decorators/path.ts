@@ -21,7 +21,7 @@ export const Path = (path: string): Function => {
             Reflect.defineMetadata(methodsSymbolKey, methods, target);
             Reflect.defineMetadata(pathSymbolKey, path, target, propertyKey);
 
-            decorator.value = function() {
+            decorator.value = async function() {
                 let url = Reflect.getMetadata(rootPathSymbolKey, target), arg = arguments;
                 const pathParams = Reflect.getMetadata(pathParamSymbolKey, target, propertyKey);
                 const queryParams = Reflect.getMetadata(queryParamSymbolKey, target, propertyKey);
@@ -65,7 +65,23 @@ export const Path = (path: string): Function => {
                 }
                 const httpMethod = Reflect.getMetadata(httpMethodSymbolKey, target, propertyKey);
                 url = httpUrl + url;
-                return httpClient[httpMethod](url, body);
+                const beforeFn = Reflect.getMetadata(beforeSymbolKey, target, propertyKey);
+                if (beforeFn) {
+                    beforeFn({
+                        params: body,
+                        url
+                    });
+                }
+
+                const result = await httpClient[httpMethod](url, body);
+
+                const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
+                if (afterFn) {
+                    afterFn({
+                        result,
+                    });
+                }
+                return result;
             };
         }
     };
