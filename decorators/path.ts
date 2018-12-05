@@ -4,7 +4,7 @@
 import {bodyParamSymbolKey, pathParamSymbolKey, queryParamSymbolKey} from './param';
 import {beforeSymbolKey, afterSymbolKey} from './event'
 import {httpMethodSymbolKey} from './http-method';
-
+import {map} from "rxjs/internal/operators";
 
 export const rootPathSymbolKey = Symbol.for('common:rootPath');
 export const pathSymbolKey = Symbol.for('common:path');
@@ -74,7 +74,7 @@ export const Path = (path: string): Function => {
                     });
                 }
 
-                return httpClient[httpMethod](url, body).map(res => {
+                return httpClient[httpMethod](url, body).pipe(map(res => {
                     const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
                     if (afterFn) {
                         return afterFn({
@@ -82,7 +82,7 @@ export const Path = (path: string): Function => {
                         });
                     }
                     return res;
-                });
+                }));
             };
         }
     };

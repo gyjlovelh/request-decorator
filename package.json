@@ -10,7 +10,8 @@
     "author": "guanyj",
     "license": "ISC",
     "dependencies": {
-        "reflect-metadata": "^0.1.12"
+        "reflect-metadata": "^0.1.12",
+        "rxjs": "^6.3.3"
     },
     "devDependencies": {
         "@angular/cli": "^7.1.0",

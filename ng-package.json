@@ -9,6 +9,7 @@
         ]
     },
     "whitelistedNonPeerDependencies": [
-        "reflect-metadata"
+        "reflect-metadata",
+        "rxjs"
     ]
 }
