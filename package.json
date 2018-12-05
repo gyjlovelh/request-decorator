@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "publish": "npm version patch && ng-packagr -p ng-package.json && npm publish dist --access public"
+        "publish": "npm version patch && ng-packagr -p ng-package.json && npm publish dist --access public",
+        "publish:d": "ng-packagr -p ng-package.json"
     },
     "author": "guanyj",
     "license": "ISC",
