@@ -73,9 +73,7 @@ export const Path = (path: string): Function => {
                 const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
                 return httpClient[httpMethod](url, body).pipe(map(res => {
                     if (afterFn) {
-                        return afterFn({
-                            res,
-                        });
+                        return afterFn(res);
                     }
                     return res;
                 }));
