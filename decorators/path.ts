@@ -25,12 +25,21 @@ export const Path = (path: string): Function => {
             decorator.value = function() {
                 let url = Reflect.getMetadata(rootPathSymbolKey, target), arg = arguments;
                 const pathParams = Reflect.getMetadata(pathParamSymbolKey, target, propertyKey);
-                const queryParams = Reflect.getMetadata(queryParamSymbolKey, target, propertyKey);
-                const bodyParams = Reflect.getMetadata(bodyParamSymbolKey, target, propertyKey);
+                let queryParams = Reflect.getMetadata(queryParamSymbolKey, target, propertyKey);
+                let bodyParams = Reflect.getMetadata(bodyParamSymbolKey, target, propertyKey);
 
                 const httpUrl = window['__decorator_http__url'];
                 const httpClient = window['__decorator_http__client'];
 
+                const beforeFn = Reflect.getMetadata(beforeSymbolKey, target, propertyKey);
+                if (beforeFn) {
+                    const params = beforeFn({
+                        query: queryParams,
+                        body: bodyParams
+                    });
+                    queryParams = params.query || queryParams;
+                    bodyParams = params.body || bodyParams;
+                }
                 if (pathParams) {
                     let paths = path.split('/').map(function(key) {
                         if (key.includes(':')) {
@@ -66,13 +75,6 @@ export const Path = (path: string): Function => {
                 }
                 const httpMethod = Reflect.getMetadata(httpMethodSymbolKey, target, propertyKey);
                 url = httpUrl + url;
-                const beforeFn = Reflect.getMetadata(beforeSymbolKey, target, propertyKey);
-                if (beforeFn) {
-                    beforeFn({
-                        params: body,
-                        url
-                    });
-                }
                 const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
                 return httpClient[httpMethod](url, body).pipe(map(res => {
                     if (afterFn) {
