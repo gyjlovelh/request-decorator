@@ -22,7 +22,7 @@ export const Path = (path: string): Function => {
             Reflect.defineMetadata(methodsSymbolKey, methods, target);
             Reflect.defineMetadata(pathSymbolKey, path, target, propertyKey);
 
-            decorator.value = async function(...arg) {
+            decorator.value = function(...arg) {
                 let url = Reflect.getMetadata(rootPathSymbolKey, target);
                 const pathParams = Reflect.getMetadata(pathParamSymbolKey, target, propertyKey);
                 let queryParams = Reflect.getMetadata(queryParamSymbolKey, target, propertyKey);
@@ -72,16 +72,12 @@ export const Path = (path: string): Function => {
                 url = httpUrl + url;
                 const afterFn = Reflect.getMetadata(afterSymbolKey, target, propertyKey);
 
-                return await new Promise(resolve => {
-                    httpClient[httpMethod](url, body).pipe(map(res => {
-                        if (afterFn) {
-                            return afterFn(res);
-                        }
-                        return res;
-                    })).subscribe(res => {
-                        resolve(res);
-                    })
-                })
+                return httpClient[httpMethod](url, body).pipe(map(res => {
+                    if (afterFn) {
+                        return afterFn(res);
+                    }
+                    return res;
+                }));
             };
         }
     };
