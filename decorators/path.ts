@@ -33,12 +33,7 @@ export const Path = (path: string): Function => {
 
                 const beforeFn = Reflect.getMetadata(beforeSymbolKey, target, propertyKey);
                 if (beforeFn) {
-                    const params = beforeFn({
-                        query: queryParams,
-                        body: bodyParams
-                    });
-                    queryParams = params.query || queryParams;
-                    bodyParams = params.body || bodyParams;
+                    beforeFn();
                 }
                 if (pathParams) {
                     let paths = path.split('/').map(function(key) {
