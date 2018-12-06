@@ -9,6 +9,7 @@
         "publish:d": "ng-packagr -p ng-package.json"
     },
     "author": "guanyj",
+    "repository": "https://github.com/gyjlovelh/request-decorator",
     "license": "ISC",
     "dependencies": {
         "reflect-metadata": "^0.1.12",
